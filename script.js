@@ -4,21 +4,21 @@ const Gameboard = (() => {
         "", "", "",
         "", "", ""
     ];
-    
-    const boxes = document.querySelectorAll(".box");
 
+    const checkArray = () => {
+        if (gameArray[0] == "X" && gameArray[1] == "X" && gameArray[2] == "X") {console.log ("first three X")};
+        if (gameArray[6] == "X" && gameArray[7] == "X" && gameArray[8] == "X") {console.log ("last three X")}; 
+    };
+
+    const boxes = document.querySelectorAll(".box");
     const makeMove = (index, mark) => {
         gameArray[index] = mark;
         boxes[index].innerHTML = mark;
+        checkArray();
     }
 
-    const updateArray = () => {
-        console.log(gameArray);
-        return gameArray;
-    };
-
     console.log("checked and " + gameArray);
-    return {gameArray, updateArray, makeMove};
+    return {gameArray, makeMove, checkArray};
 })();
 
 
@@ -45,26 +45,52 @@ const Player = (name, mark) => {
     };
 
     const takeTurn = (index, mark) => {
-        if (turn && Gameboard.gameArray[index] == "") {
-            Gameboard.makeMove(index, mark);
-            turn = false;
-        }
+        console.log("start takeTurn");
+        Gameboard.makeMove(index, mark);
+        turn = false;
     };
-
+    
     const finalMove = () => {
-        console.log("start finalMove");
-        const boxes = document.querySelectorAll(".box");
-        enableTurn();
-        boxes.forEach(box => {
-            box.addEventListener('click', () => {
-                takeTurn(box.id.slice(-1), mark);
+        return new Promise((resolve) => {
+            console.log("start finalMove");
+            const boxes = document.querySelectorAll(".box");
+            enableTurn();
+
+            const boxClickHandler = (event) => {
+                const box = event.target;
+
+                console.log("box clicked");
+                console.log(turn);
+                if (turn && Gameboard.gameArray[box.id.slice(-1)] === "") {
+                    takeTurn(box.id.slice(-1), mark);
+                    resolve();
+                    boxes.forEach(box => box.removeEventListener('click', boxClickHandler));
+                }
+            };
+        
+                boxes.forEach(box => {
+                    box.addEventListener('click', boxClickHandler);
+                });
+
             });
-        });
-    };
+
+            // Reminder:
+            // 1. We run finalMove()
+            // 2. We set addEventListener to every box, with click to activate boxClickHandler
+            // 3. When boxClickHandler finishes running, we removeEventListener from ALL boxes
+        };
 
     return {name, mark, getName, getCounter, winOne, winGame, enableTurn, takeTurn, finalMove};
 };
 
-
 const markus = Player("markus", "X");
 const peter = Player("peter", "O");
+
+const playAlternateTurns = async () => {
+    for (let i = 0; i < 20; i++) {
+        await markus.finalMove();
+        await peter.finalMove();
+    }
+};
+
+playAlternateTurns();
