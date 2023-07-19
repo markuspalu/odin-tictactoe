@@ -1,0 +1,25 @@
+body {
+    font-size: 40px;
+}
+
+.maincontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gameboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.gameboard1, .gameboard2, .gameboard3 {
+    display: flex;
+}
+
+.box {
+    border: 2px solid red;
+    padding: 40px;
+}
