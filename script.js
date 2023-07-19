@@ -1,36 +1,29 @@
-
-
-
-// // For X
-// boxes.forEach(box => {
-//     box.addEventListener('click', () => {
-//         if (box.innerHTML === "") {
-//             box.innerHTML = 'X';
-//         }
-//     })
-// })
-
-// // For O
-// boxes.forEach(box => {
-//     box.addEventListener('click', () => {
-//         if (box.innerHTML === "") {
-//             box.innerHTML = 'O';
-//         }
-//     })
-// })
-
-
 const Gameboard = (() => {
     let gameArray = [
-        "X", "O", "O",
-        "X", "X", "O",
-        "O", "X", "X"
+        "", "", "",
+        "", "", "",
+        "", "", ""
     ];
-    return {gameArray};
+    
+    const boxes = document.querySelectorAll(".box");
+
+    const makeMove = (index, mark) => {
+        gameArray[index] = mark;
+        boxes[index].innerHTML = mark;
+    }
+
+    const updateArray = () => {
+        console.log(gameArray);
+        return gameArray;
+    };
+
+    console.log("checked and " + gameArray);
+    return {gameArray, updateArray, makeMove};
 })();
 
+
 const Player = (name, mark) => {
-    let turn = true;
+    let turn = false;
     let counter = 0;
     const getName = () => console.log("name is " + name);
     const getCounter = () => console.log("current counter is "+ counter);
@@ -47,43 +40,31 @@ const Player = (name, mark) => {
         console.log("winner winner!");
     };
 
-    const whosTurn = (otherPlayer) => {
-        console.log(otherPlayer)
-        const boxes = document.querySelectorAll(".box");
-        if (turn == true) {
-            boxes.forEach(box => {
-                box.addEventListener('click', () => {
-                    if (box.innerHTML === "") {
-                        console.log("changed");
-                        box.innerHTML = mark;
-                        turn = false;
-                        whosTurn();
-                    }
-                });
-            });
-        } else {
-            return ;
+    const enableTurn = () => {
+        turn = true;
+    };
+
+    const takeTurn = (index, mark) => {
+        if (turn && Gameboard.gameArray[index] == "") {
+            Gameboard.makeMove(index, mark);
+            turn = false;
         }
     };
 
-    return {name, mark, getName, getCounter, winOne, winGame, whosTurn, turn};
+    const finalMove = () => {
+        console.log("start finalMove");
+        const boxes = document.querySelectorAll(".box");
+        enableTurn();
+        boxes.forEach(box => {
+            box.addEventListener('click', () => {
+                takeTurn(box.id.slice(-1), mark);
+            });
+        });
+    };
+
+    return {name, mark, getName, getCounter, winOne, winGame, enableTurn, takeTurn, finalMove};
 };
 
-const markus = Player("markus", "O");
-const peter = Player("peter", "X");
 
-console.log(markus.name);
-peter.whosTurn(markus);
-
-
-
-
-
-
-
-
-// markus.getName();
-// markus.getCounter();
-// markus.winOne();
-// markus.winOne();
-// markus.winOne();
+const markus = Player("markus", "X");
+const peter = Player("peter", "O");
