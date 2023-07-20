@@ -5,20 +5,37 @@ const Gameboard = (() => {
         "", "", ""
     ];
 
-    const checkArray = () => {
-        if (gameArray[0] == "X" && gameArray[1] == "X" && gameArray[2] == "X") {console.log ("first three X")};
-        if (gameArray[6] == "X" && gameArray[7] == "X" && gameArray[8] == "X") {console.log ("last three X")}; 
+    const checkArray = (mark) => {
+        if ((Gameboard.gameArray[0] == mark && Gameboard.gameArray[1] == mark && Gameboard.gameArray[2] == mark) ||
+           (Gameboard.gameArray[3] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[5] == mark) ||
+           (Gameboard.gameArray[6] == mark && Gameboard.gameArray[7] == mark && Gameboard.gameArray[8] == mark) ||
+            
+           (Gameboard.gameArray[0] == mark && Gameboard.gameArray[3] == mark && Gameboard.gameArray[6] == mark) ||
+           (Gameboard.gameArray[1] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[7] == mark) ||
+           (Gameboard.gameArray[2] == mark && Gameboard.gameArray[5] == mark && Gameboard.gameArray[8] == mark) ||
+
+           (Gameboard.gameArray[0] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[8] == mark) ||
+           (Gameboard.gameArray[2] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[6] == mark)) {
+            return true;
+           } else {
+            return false;
+           }
     };
 
-    const boxes = document.querySelectorAll(".box");
-    const makeMove = (index, mark) => {
-        gameArray[index] = mark;
-        boxes[index].innerHTML = mark;
-        checkArray();
+    const restartGame = () => {
+        console.log("restarting game");
+        const boxes = document.querySelectorAll(".box");
+        Gameboard.gameArray = [
+        "", "", "",
+        "", "", "",
+        "", "", ""
+        ];
+        
+        for (let i = 0; i < boxes.length; i++) {
+            boxes[i].innerHTML = "";
+        }
     }
-
-    console.log("checked and " + gameArray);
-    return {gameArray, makeMove, checkArray};
+    return {gameArray, checkArray, restartGame};
 })();
 
 
@@ -30,7 +47,8 @@ const Player = (name, mark) => {
     
     const winOne = () => {
         counter++;
-        console.log(counter);
+        console.log("Won game and counter is " + counter);
+        Gameboard.restartGame();
         if (counter == 3) {
             winGame();
         }
@@ -38,6 +56,7 @@ const Player = (name, mark) => {
 
     const winGame = () => {
         console.log("winner winner!");
+        alert("Games are over!")
     };
 
     const enableTurn = () => {
@@ -46,9 +65,20 @@ const Player = (name, mark) => {
 
     const takeTurn = (index, mark) => {
         console.log("start takeTurn");
-        Gameboard.makeMove(index, mark);
+        makeMove(index, mark);
         turn = false;
     };
+
+    const boxes = document.querySelectorAll(".box");
+    const makeMove = (index, mark) => {
+        Gameboard.gameArray[index] = mark;
+        boxes[index].innerHTML = mark;
+        if (Gameboard.checkArray(mark) == true) {
+            winOne();
+            playAlternateTurns();
+
+        };
+    }
     
     const finalMove = () => {
         return new Promise((resolve) => {
@@ -80,7 +110,7 @@ const Player = (name, mark) => {
             // 3. When boxClickHandler finishes running, we removeEventListener from ALL boxes
         };
 
-    return {name, mark, getName, getCounter, winOne, winGame, enableTurn, takeTurn, finalMove};
+    return {name, mark, getName, getCounter, winOne, winGame, enableTurn, takeTurn, finalMove, makeMove};
 };
 
 const markus = Player("markus", "X");
@@ -92,5 +122,6 @@ const playAlternateTurns = async () => {
         await peter.finalMove();
     }
 };
-
 playAlternateTurns();
+
+
