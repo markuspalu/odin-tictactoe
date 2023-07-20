@@ -34,6 +34,7 @@ const Gameboard = (() => {
         for (let i = 0; i < boxes.length; i++) {
             boxes[i].innerHTML = "";
         }
+        player1.finalMove();
     }
     return {gameArray, checkArray, restartGame};
 })();
@@ -44,10 +45,11 @@ const Player = (name, mark) => {
     let counter = 0;
     const getName = () => console.log("name is " + name);
     const getCounter = () => console.log("current counter is "+ counter);
-    
+
     const winOne = () => {
         counter++;
         console.log("Won game and counter is " + counter);
+        player1.finalMove();
         Gameboard.restartGame();
         if (counter == 3) {
             winGame();
@@ -67,6 +69,7 @@ const Player = (name, mark) => {
         console.log("start takeTurn");
         makeMove(index, mark);
         turn = false;
+        console.log(name + " turn is now " + turn);
     };
 
     const boxes = document.querySelectorAll(".box");
@@ -74,23 +77,28 @@ const Player = (name, mark) => {
         Gameboard.gameArray[index] = mark;
         boxes[index].innerHTML = mark;
         if (Gameboard.checkArray(mark) == true) {
-            winOne();
-            playAlternateTurns();
-
+            boxes.forEach(box => box.classList.add('disabled'));
+            setTimeout(() => {
+                winOne(),
+                boxes.forEach(box => box.classList.remove('disabled'));
+              }, 2000);
         };
+        if (mark == "X") {
+            peter.finalMove()
+        } else {
+            player1.finalMove()
+        }
     }
     
     const finalMove = () => {
         return new Promise((resolve) => {
-            console.log("start finalMove");
             const boxes = document.querySelectorAll(".box");
             enableTurn();
 
             const boxClickHandler = (event) => {
                 const box = event.target;
 
-                console.log("box clicked");
-                console.log(turn);
+                console.log(name + " turn is " + turn);
                 if (turn && Gameboard.gameArray[box.id.slice(-1)] === "") {
                     takeTurn(box.id.slice(-1), mark);
                     resolve();
@@ -113,15 +121,7 @@ const Player = (name, mark) => {
     return {name, mark, getName, getCounter, winOne, winGame, enableTurn, takeTurn, finalMove, makeMove};
 };
 
-const markus = Player("markus", "X");
+const player1 = Player("markus", "X");
 const peter = Player("peter", "O");
 
-const playAlternateTurns = async () => {
-    for (let i = 0; i < 20; i++) {
-        await markus.finalMove();
-        await peter.finalMove();
-    }
-};
-playAlternateTurns();
-
-
+Gameboard.restartGame();
