@@ -21,6 +21,7 @@ const Gameboard = (() => {
             return false;
            }
     };
+    
 
     const restartGame = () => {
         console.log("restarting game");
@@ -34,22 +35,21 @@ const Gameboard = (() => {
         for (let i = 0; i < boxes.length; i++) {
             boxes[i].innerHTML = "";
         }
-        player1.finalMove();
     }
     return {gameArray, checkArray, restartGame};
 })();
 
 
 const Player = (name, mark) => {
-    let turn = false;
+    let currentPlayer = null;
+
     let counter = 0;
     const getName = () => console.log("name is " + name);
     const getCounter = () => console.log("current counter is "+ counter);
 
     const winOne = () => {
         counter++;
-        console.log("Won game and counter is " + counter);
-        player1.finalMove();
+        console.log(name + " won game and counter is " + counter);
         Gameboard.restartGame();
         if (counter == 3) {
             winGame();
@@ -61,15 +61,9 @@ const Player = (name, mark) => {
         alert("Games are over!")
     };
 
-    const enableTurn = () => {
-        turn = true;
-    };
-
     const takeTurn = (index, mark) => {
         console.log("start takeTurn");
         makeMove(index, mark);
-        turn = false;
-        console.log(name + " turn is now " + turn);
     };
 
     const boxes = document.querySelectorAll(".box");
@@ -83,24 +77,22 @@ const Player = (name, mark) => {
                 boxes.forEach(box => box.classList.remove('disabled'));
               }, 2000);
         };
-        if (mark == "X") {
-            peter.finalMove()
-        } else {
-            player1.finalMove()
-        }
+
     }
     
     const finalMove = () => {
+        if (!currentPlayer) {
+            currentPlayer = mark === "X" ? player1 : player2;
+        }
         return new Promise((resolve) => {
             const boxes = document.querySelectorAll(".box");
-            enableTurn();
-
             const boxClickHandler = (event) => {
                 const box = event.target;
 
-                console.log(name + " turn is " + turn);
-                if (turn && Gameboard.gameArray[box.id.slice(-1)] === "") {
+                
+                if (Gameboard.gameArray[box.id.slice(-1)] === "") {
                     takeTurn(box.id.slice(-1), mark);
+                    currentPlayer = currentPlayer === player1 ? player2 : player1;
                     resolve();
                     boxes.forEach(box => box.removeEventListener('click', boxClickHandler));
                 }
@@ -111,17 +103,50 @@ const Player = (name, mark) => {
                 });
 
             });
-
             // Reminder:
             // 1. We run finalMove()
             // 2. We set addEventListener to every box, with click to activate boxClickHandler
             // 3. When boxClickHandler finishes running, we removeEventListener from ALL boxes
+            
         };
 
-    return {name, mark, getName, getCounter, winOne, winGame, enableTurn, takeTurn, finalMove, makeMove};
+    return {name, mark, getName, getCounter, winOne, winGame, takeTurn, finalMove, makeMove, counter};
 };
 
-const player1 = Player("markus", "X");
-const peter = Player("peter", "O");
+let player1;
+let player2;
 
-Gameboard.restartGame();
+const submitButton = document.querySelector(".submitButton");
+const name1 = document.getElementById("name1");
+const name2 = document.getElementById("name2");
+const screen1 = document.querySelector(".screen1");
+const screen2 = document.querySelector(".screen2");
+submitButton.addEventListener("click", () => {
+    if (name1.value != "" && name2.value != "") {
+        player1 = Player(name1.value, "X");
+        console.log(player1);
+        player2 = Player(name2.value, "O");
+        console.log(player2);
+        screen1.style.display = "none";
+        screen2.style.display = "flex";
+        playGames()
+    }
+})
+
+
+const startGame = async () => {
+    while (true) {
+        await player1.finalMove();
+        
+        if (Gameboard.checkArray(player1.mark) || Gameboard.checkArray(player2.mark)) {
+            break;
+        }
+        await player2.finalMove();
+    }
+};
+
+const playGames = async() => {
+    for (let i = 0; i < 100; i++) {
+        await startGame();
+    }
+}

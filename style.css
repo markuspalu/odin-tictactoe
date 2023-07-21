@@ -1,8 +1,70 @@
-body {
-    font-size: 40px;
+/* First screen */
+
+.screen1 {
+    display: block;
 }
 
-.maincontainer {
+.maincontainer1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.title > p {
+    font-size: 60px;
+}
+
+.inputs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+input { 
+    width: 150px;
+    padding: 3px 15px;
+}
+
+.firstinput, .secondinput {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px;
+    gap: 10px;
+}
+
+.submitButton {
+    padding: 3px 20px;
+}
+
+
+
+/* Second screen */
+.screen2 {
+    display: none;
+    justify-content: center;
+    
+}
+
+.playerName1 {
+    padding: 100px;
+}
+
+.playerName2 {
+    padding: 100px;
+}
+
+.maincontainer2 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,6 +84,7 @@ body {
 
 .box {
     display: flex;
+    font-size: 40px;
     width: 50px;
     height: 50px;
     border: 2px solid red;

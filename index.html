@@ -7,22 +7,42 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="maincontainer">
-        <div class="gameboard1">
-            <div id=box0 class="box board0"></div>
-            <div id=box1 class="box board1"></div>
-            <div id=box2 class="box board2"></div>
+    <div class="screen1">
+        <div class="maincontainer1">
+            <div class="title"><p>Tic-Tac-Toe</p></div>
+            <div class="inputs">
+                <div class="firstinput">
+                    <label for="name1">Player 1 Name</label>
+                    <input type="text" id="name1" name="name1" required>
+                </div>
+                <div class="secondinput">
+                    <label for="name2">Player 2 Name</label>
+                    <input type="text" id="name2" name="name1" required>
+                </div>
+            </div>
+            <button class="submitButton">Submit</button>
         </div>
-        <div class="gameboard2">
-            <div id=box3 class="box board3"></div>
-            <div id=box4 class="box board4"></div>
-            <div id=box5 class="box board5"></div>
+    </div>
+    <div class="screen2">
+        <div class="playerName1">Player1</div>
+        <div class="maincontainer2">
+            <div class="gameboard1">
+                <div id=box0 class="box board0"></div>
+                <div id=box1 class="box board1"></div>
+                <div id=box2 class="box board2"></div>
+            </div>
+            <div class="gameboard2">
+                <div id=box3 class="box board3"></div>
+                <div id=box4 class="box board4"></div>
+                <div id=box5 class="box board5"></div>
+            </div>
+            <div class="gameboard3">
+                <div id=box6 class="box board6"></div>
+                <div id=box7 class="box board7"></div>
+                <div id=box8 class="box board8"></div>
+            </div>
         </div>
-        <div class="gameboard3">
-            <div id=box6 class="box board6"></div>
-            <div id=box7 class="box board7"></div>
-            <div id=box8 class="box board8"></div>
-        </div>
+        <div class="playerName2">Player2</div>
     </div>
 </body>
 <script src="script.js"></script>
