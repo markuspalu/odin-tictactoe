@@ -48,10 +48,13 @@ const Player = (name, mark) => {
     const getCounter = () => console.log("current counter is "+ counter);
 
     const winOne = () => {
-        counter++;
-        console.log(name + " won game and counter is " + counter);
+        if (mark === "X") {
+            player1.counter++;
+        } else if (mark === "O") {
+            player2.counter++;
+        }
         Gameboard.restartGame();
-        if (counter == 3) {
+        if (player1.counter == 3 || player2.counter == 3) {
             winGame();
         }
     };
@@ -66,10 +69,29 @@ const Player = (name, mark) => {
         makeMove(index, mark);
     };
 
+    const checkTie = () => {
+        if (Gameboard.gameArray.every(cell => cell !== "")) {
+            player1.counter++;
+            player2.counter++;
+
+            boxes.forEach(box => box.classList.add('disabled'));
+            setTimeout(() => {
+                Gameboard.restartGame();
+                boxes.forEach(box => box.classList.remove('disabled'));
+              }, 2000);
+              
+        };
+
+            if (player1.counter == 3 && player2.counter == 3) {
+                alert("it's a tie! Game over!");
+            }
+    }    
+
     const boxes = document.querySelectorAll(".box");
     const makeMove = (index, mark) => {
         Gameboard.gameArray[index] = mark;
         boxes[index].innerHTML = mark;
+        checkTie();
         if (Gameboard.checkArray(mark) == true) {
             boxes.forEach(box => box.classList.add('disabled'));
             setTimeout(() => {
@@ -138,7 +160,7 @@ const startGame = async () => {
     while (true) {
         await player1.finalMove();
         
-        if (Gameboard.checkArray(player1.mark) || Gameboard.checkArray(player2.mark)) {
+        if (Gameboard.checkArray(player1.mark) || Gameboard.checkArray(player2.mark) || Gameboard.gameArray.every(cell => cell === "")) {
             break;
         }
         await player2.finalMove();
