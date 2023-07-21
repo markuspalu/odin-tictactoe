@@ -49,9 +49,12 @@ const Player = (name, mark) => {
     const winOne = () => {
         if (mark === "X") {
             player1.counter++;
+            updateCounter1()
         } else if (mark === "O") {
             player2.counter++;
+            updateCounter2()
         }
+        
         Gameboard.restartGame();
         if (player1.counter == 3 || player2.counter == 3) {
             winGame();
@@ -72,10 +75,11 @@ const Player = (name, mark) => {
         if (Gameboard.gameArray.every(cell => cell !== "")) {
             player1.counter++;
             player2.counter++;
-
             boxes.forEach(box => box.classList.add('disabled'));
             setTimeout(() => {
-                Gameboard.restartGame(); ///////////////////////////////////////////////
+                Gameboard.restartGame();
+                updateCounter1()
+                updateCounter2()
                 boxes.forEach(box => box.classList.remove('disabled'));
               }, 2000);
               
@@ -145,15 +149,42 @@ const screen2 = document.querySelector(".screen2");
 submitButton.addEventListener("click", () => {
     if (name1.value != "" && name2.value != "") {
         player1 = Player(name1.value, "X");
-        console.log(player1);
         player2 = Player(name2.value, "O");
-        console.log(player2);
         screen1.style.display = "none";
         screen2.style.display = "flex";
         playGames()
+        runSecondScreen()
     }
 })
 
+const playerName1 = document.querySelector(".playerName1");
+const playerName2 = document.querySelector(".playerName2");
+const playerCounter1 = document.querySelector(".playerCounter1");
+const playerCounter2 = document.querySelector(".playerCounter2");
+const runSecondScreen = () => {
+    playerName1.innerHTML = player1.name;
+    playerName2.innerHTML = player2.name;
+
+}
+
+
+const updateCounter1 = () => {
+    playerCounter1.innerHTML = player1.counter;
+    playerCounter1.classList.add("zoom-in");
+    // Remove the "zoom-in" class after the animation completes (1s)
+    setTimeout(() => {
+      playerCounter1.classList.remove("zoom-in");
+    }, 1000);
+}
+
+const updateCounter2 = () => {
+    playerCounter2.innerHTML = player1.counter;
+    playerCounter2.classList.add("zoom-in");
+    // Remove the "zoom-in" class after the animation completes (1s)
+    setTimeout(() => {
+      playerCounter2.classList.remove("zoom-in");
+    }, 1000);
+}
 
 const startGame = async () => {
     while (true) {

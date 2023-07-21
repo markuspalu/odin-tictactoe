@@ -1,7 +1,10 @@
-/* First screen */
+body {
+    background: #F9F5F6;
+}
 
 .screen1 {
     display: block;
+    font-family: 'Varela Round', sans-serif;
 }
 
 .maincontainer1 {
@@ -15,6 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-shadow: 3px 3px 3px rgb(156, 156, 156);
 }
 
 
@@ -47,21 +51,77 @@ input {
     padding: 3px 20px;
 }
 
+input {
+    border-bottom-color: rgba(0,0,0,.42);
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px 16px 6px;
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    border-bottom: 1px solid;
+    border-radius: 4px 4px 0 0;
+    background: rgb(245, 245, 245);
+    height: 36px;
+    font-family: 'Varela Round', sans-serif;
+}
+
+input:hover{
+    border-bottom-color: rgba(0,0,0,.87);
+    background: #ececec;
+}
+input:focus {
+    outline: none;
+  }
+
+.submitButton {
+      align-items: center;
+      background-color: #FCFCFD;
+      border-radius: 4px;
+      border-width: 0;
+      box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+      display: inline-flex;
+      justify-content: center;
+      padding: 10px 30px;
+      transition: box-shadow .15s,transform .15s;
+      font-size: 18px;
+      font-family: 'Varela Round', sans-serif;
+}
+    
+.submitButton:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+    
+.submitButton:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+    
+.submitButton:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
+}
 
 
 /* Second screen */
 .screen2 {
-    display: none;
-    justify-content: center;
+    display: none; /* turns to flex */
+    justify-content: space-between;
+    padding: 0 250px;
     
 }
 
-.playerName1 {
-    padding: 100px;
+.playerName1, .playerCounter1, .playerName2, .playerCounter2  {
+    display: flex;
+    justify-content: center;
+    padding: 10px 10px;
+    font-size: 28px;
+    font-family: 'Varela Round', sans-serif;
 }
 
-.playerName2 {
-    padding: 100px;
+.player1, .player2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .maincontainer2 {
@@ -84,15 +144,71 @@ input {
 
 .box {
     display: flex;
-    font-size: 40px;
+    font-size: 80px;
     width: 50px;
     height: 50px;
-    border: 2px solid red;
+    border: 2px solid black;
     padding: 40px;
     align-items: center;
     justify-content: center;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.board0 {
+    border-top: none;
+    border-left: none;
+}
+
+.board1 {
+    border-top: none;
+}
+
+.board2 {
+    border-top: none;
+    border-right: none;
+}
+
+.board3 {
+    border-left: none;
+}
+
+.board5 {
+    border-right: none;
+}
+
+.board6 {
+    border-bottom: none;
+    border-left: none;
+}
+
+.board7 {
+    border-bottom: none;
+}
+
+.board8 {
+    border-right: none;
+    border-bottom: none;
 }
 
 .disabled {
     pointer-events: none;
 }
+
+.zoom-in {
+    animation: zoomIn 1s ease forwards;
+  }
+  
+  @keyframes zoomIn {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    70% {
+      transform: scale(2);
+      opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+  }
