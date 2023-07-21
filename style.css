@@ -73,7 +73,7 @@ input:focus {
     outline: none;
   }
 
-.submitButton {
+.submitButton, .backButton{
       align-items: center;
       background-color: #FCFCFD;
       border-radius: 4px;
@@ -87,16 +87,16 @@ input:focus {
       font-family: 'Varela Round', sans-serif;
 }
     
-.submitButton:focus {
+.submitButton:focus, .backButton:focus {
     box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
 }
     
-.submitButton:hover {
+.submitButton:hover, .backButton:focus {
     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
     transform: translateY(-2px);
 }
     
-.submitButton:active {
+.submitButton:active, .backButton:active {
     box-shadow: #D6D6E7 0 3px 7px inset;
     transform: translateY(2px);
 }
@@ -198,17 +198,90 @@ input:focus {
     animation: zoomIn 1s ease forwards;
   }
   
-  @keyframes zoomIn {
+@keyframes zoomIn {
     0% {
-      transform: scale(1);
-      opacity: 0;
+        transform: scale(1);
+        opacity: 0;
     }
     70% {
-      transform: scale(2);
-      opacity: 1;
+        transform: scale(2.3);
+        opacity: 1;
     }
     100% {
         transform: scale(1);
         opacity: 1;
-      }
+    }
+}
+
+.zoom-in2 {
+    animation: zoomIn2 1s ease forwards;
+}
+
+@keyframes zoomIn2 {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.zoom-left {
+    animation: zoomLeft 1s ease;
+}
+
+@keyframes zoomLeft {
+    0% {
+        transform: translateX(-150%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.zoom-right {
+    animation: zoomRight 1s ease;
+}
+
+@keyframes zoomRight {
+    0% {
+        transform: translateX(150%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Screen 3 */
+
+.screen3 {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.whoWon {
+    display: flex;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 38px;
+    padding: 100px 0 0 0;
+    margin-bottom: 30px;
+    animation: pulse-animation 1s infinite;
+}
+
+@keyframes pulse-animation {
+	0% {
+		transform: scale(0.90);
+	}
+
+	70% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0.90);
+	}
   }
