@@ -6,22 +6,21 @@ const Gameboard = (() => {
     ];
 
     const checkArray = (mark) => {
-        if ((Gameboard.gameArray[0] == mark && Gameboard.gameArray[1] == mark && Gameboard.gameArray[2] == mark) ||
-           (Gameboard.gameArray[3] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[5] == mark) ||
-           (Gameboard.gameArray[6] == mark && Gameboard.gameArray[7] == mark && Gameboard.gameArray[8] == mark) ||
-            
-           (Gameboard.gameArray[0] == mark && Gameboard.gameArray[3] == mark && Gameboard.gameArray[6] == mark) ||
-           (Gameboard.gameArray[1] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[7] == mark) ||
-           (Gameboard.gameArray[2] == mark && Gameboard.gameArray[5] == mark && Gameboard.gameArray[8] == mark) ||
-
-           (Gameboard.gameArray[0] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[8] == mark) ||
-           (Gameboard.gameArray[2] == mark && Gameboard.gameArray[4] == mark && Gameboard.gameArray[6] == mark)) {
-            return true;
-           } else {
-            return false;
-           }
-    };
+        const winningCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizontal
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // vertical
+            [0, 4, 8], [2, 4, 6]             // diagonal
+        ];
+        
+        for (const combination of winningCombinations) {
+            const [a, b, c] = combination;
+            if (Gameboard.gameArray[a] === mark && Gameboard.gameArray[b] === mark && Gameboard.gameArray[c] === mark) {
+                return true;
+            }
+        }
     
+        return false;
+    };
 
     const restartGame = () => {
         console.log("restarting game");
@@ -76,7 +75,7 @@ const Player = (name, mark) => {
 
             boxes.forEach(box => box.classList.add('disabled'));
             setTimeout(() => {
-                Gameboard.restartGame();
+                Gameboard.restartGame(); ///////////////////////////////////////////////
                 boxes.forEach(box => box.classList.remove('disabled'));
               }, 2000);
               
@@ -160,10 +159,10 @@ const startGame = async () => {
     while (true) {
         await player1.finalMove();
         
-        if (Gameboard.checkArray(player1.mark) || Gameboard.checkArray(player2.mark) || Gameboard.gameArray.every(cell => cell === "")) {
+        if (Gameboard.checkArray(player1.mark) || Gameboard.checkArray(player2.mark) || Gameboard.gameArray.every(cell => cell !== "")) {
             break;
         }
-        await player2.finalMove();
+        await player2.finalMove(); // skip on new game
     }
 };
 
